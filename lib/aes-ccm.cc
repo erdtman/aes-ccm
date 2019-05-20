@@ -44,6 +44,7 @@ const EVP_CIPHER* EVP_aes_star_ccm(Local<Value> key) {
 */
 void CcmEncrypt(const FunctionCallbackInfo<Value>& args) {
   Isolate* isolate = args.GetIsolate();
+  Local<v8::Context> context = isolate->GetCurrentContext();
 
   if (args.Length() < 4 ||
       !Buffer::HasInstance(args[0]) ||
@@ -66,7 +67,7 @@ void CcmEncrypt(const FunctionCallbackInfo<Value>& args) {
   unsigned char *ciphertext = new unsigned char[ciphertext_len];
 
   // Make a authentication tag buffer
-  int auth_tag_len = args[4]->NumberValue();
+  int auth_tag_len = args[4]->Int32Value(context).FromMaybe(0);
   unsigned char *auth_tag = new unsigned char[auth_tag_len];
 
   // Init OpenSSL interace with 128-bit or 256-bit AES CCM cipher and give it the
