@@ -31,8 +31,8 @@
   },
   "homepage": "https://github.com/erdtman/aes-ccm",
   "dependencies": {
-    "node-gyp-install": "^2.0.1",
-    "node-pre-gyp": "^0.12.0"
+    "node-gyp-install": "^2.2.0",
+    "node-pre-gyp": "^0.14.0"
   },
   "devDependencies": {
     "ava": "*",

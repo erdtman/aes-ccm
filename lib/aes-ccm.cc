@@ -56,7 +56,8 @@ void CcmEncrypt(const FunctionCallbackInfo<Value>& args) {
       Exception::TypeError(
         String::NewFromUtf8(isolate, "encrypt requires a key Buffer, a " \
                       "IV Buffer, a plaintext Buffer, an auth_data " \
-                      "Buffer parameter, and the length of the auth tag")));
+                      "Buffer parameter, and the length of the auth tag",
+                      v8::NewStringType::kNormal).ToLocalChecked()));
     return;
   }
 
@@ -112,8 +113,16 @@ void CcmEncrypt(const FunctionCallbackInfo<Value>& args) {
   MaybeLocal<Object> ciphertext_buf = Buffer::New(isolate, (char*)ciphertext, plaintext_len);
   MaybeLocal<Object> auth_tag_buf = Buffer::New(isolate, (char*)auth_tag, auth_tag_len);
   Local<Object> return_obj = Object::New(isolate);
-  return_obj->Set(String::NewFromUtf8(isolate, "ciphertext"), ciphertext_buf.FromMaybe(Local<Object>()));
-  return_obj->Set(String::NewFromUtf8(isolate, "auth_tag"), auth_tag_buf.FromMaybe(Local<Object>()));
+  return_obj->Set(context,
+                  String::NewFromUtf8(isolate,
+                                      "ciphertext",
+                                      v8::NewStringType::kNormal).ToLocalChecked(),
+                  ciphertext_buf.FromMaybe(Local<Object>()));
+  return_obj->Set(context,
+                  String::NewFromUtf8(isolate,
+                                      "auth_tag",
+                                      v8::NewStringType::kNormal).ToLocalChecked(),
+                  auth_tag_buf.FromMaybe(Local<Object>()));
 
   // Return it
   args.GetReturnValue().Set(return_obj);
@@ -134,6 +143,7 @@ void CcmEncrypt(const FunctionCallbackInfo<Value>& args) {
 */
 void CcmDecrypt(const FunctionCallbackInfo<Value>& args) {
   Isolate* isolate = args.GetIsolate();
+  Local<v8::Context> context = isolate->GetCurrentContext();
 
   if (args.Length() < 5 ||
       !Buffer::HasInstance(args[0]) ||
@@ -144,7 +154,8 @@ void CcmDecrypt(const FunctionCallbackInfo<Value>& args) {
      ) {
     isolate->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "decrypt requires a key Buffer, a " \
                       "IV Buffer, a ciphertext Buffer, an auth_data " \
-                      "Buffer and an auth_tag Buffer parameter")));
+                      "Buffer and an auth_tag Buffer parameter",
+                      v8::NewStringType::kNormal).ToLocalChecked()));
   }
 
   // Make a buffer for the plaintext that is the same size as the
@@ -195,8 +206,14 @@ void CcmDecrypt(const FunctionCallbackInfo<Value>& args) {
   // We strip padding from the plaintext
   MaybeLocal<Object> plaintext_buf = Buffer::New(isolate, (char*)plaintext, ciphertext_len);
   Local<Object> return_obj = Object::New(isolate);
-  return_obj->Set(String::NewFromUtf8(isolate, "plaintext"), plaintext_buf.FromMaybe(Local<Object>()));
-  return_obj->Set(String::NewFromUtf8(isolate, "auth_ok"), Boolean::New(isolate, auth_ok));
+  return_obj->Set(context, String::NewFromUtf8(isolate,
+                                               "plaintext",
+                                               v8::NewStringType::kNormal).ToLocalChecked(),
+                 plaintext_buf.FromMaybe(Local<Object>()));
+  return_obj->Set(context, String::NewFromUtf8(isolate,
+                                               "auth_ok",
+                                               v8::NewStringType::kNormal).ToLocalChecked(),
+                 Boolean::New(isolate, auth_ok));
 
   // Return it
   args.GetReturnValue().Set(return_obj);
