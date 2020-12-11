@@ -13,8 +13,10 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-7
+      - musl-dev
 install:
-  - npm install
+  - sudo ln -s /usr/lib/x86_64-linux-musl/libc.so /lib/libc.musl-x86_64.so.1
+  - npm ci
   - npm install coveralls
 script:
   - npm run coverage
