@@ -80,3 +80,19 @@ services:
               ./node_modules/.bin/node-pre-gyp package && \
               export NODE_PRE_GYP_GITHUB_TOKEN=${NODE_PRE_GYP_GITHUB_TOKEN} && \
               ./node_modules/.bin/node-pre-gyp-github publish --release"
+
+  build-linux-node-15:
+    image: node:15-alpine
+    volumes:
+      - ./:/opt/aes-ccm
+    command: >
+      sh -c  "apk update && \
+              apk add python make g++ && \
+              cd /opt/aes-ccm && \
+              rm -Rf build node_modules && \
+              npm install && \
+              ./node_modules/.bin/node-pre-gyp configure && \
+              ./node_modules/.bin/node-pre-gyp build && \
+              ./node_modules/.bin/node-pre-gyp package && \
+              export NODE_PRE_GYP_GITHUB_TOKEN=${NODE_PRE_GYP_GITHUB_TOKEN} && \
+              ./node_modules/.bin/node-pre-gyp-github publish --release"

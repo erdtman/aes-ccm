@@ -1,5 +1,8 @@
 language: node_js
 sudo: false
+arch:
+  - amd64
+  - arm64
 node_js:
 - '13'
 env:
@@ -22,6 +25,7 @@ after_success:
 - docker-compose up build-linux-node-12
 - docker-compose up build-linux-node-13
 - docker-compose up build-linux-node-14
+- docker-compose up build-linux-node-15
 cache:
   directories:
     - node_modules
