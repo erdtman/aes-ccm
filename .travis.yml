@@ -4,28 +4,28 @@ arch:
   - amd64
   - arm64
 node_js:
-- '13'
+  - "13"
 env:
-  - CXX=g++-4.8
+  - CXX=g++-7
 addons:
   apt:
     sources:
-    - ubuntu-toolchain-r-test
+      - ubuntu-toolchain-r-test
     packages:
-    - g++-4.8
+      - g++-7
 install:
-- npm install
-- npm install coveralls
+  - npm install
+  - npm install coveralls
 script:
-- npm run coverage
+  - npm run coverage
 after_success:
-- npm run coveralls
-- docker-compose up build-linux-node-10
-- docker-compose up build-linux-node-11
-- docker-compose up build-linux-node-12
-- docker-compose up build-linux-node-13
-- docker-compose up build-linux-node-14
-- docker-compose up build-linux-node-15
+  - npm run coveralls
+  - docker-compose up build-linux-node-10
+  - docker-compose up build-linux-node-11
+  - docker-compose up build-linux-node-12
+  - docker-compose up build-linux-node-13
+  - docker-compose up build-linux-node-14
+  - docker-compose up build-linux-node-15
 cache:
   directories:
     - node_modules
