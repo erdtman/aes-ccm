@@ -4,7 +4,7 @@ arch:
   - amd64
   - arm64
 node_js:
-  - "13"
+  - "15"
 env:
   - CXX=g++-7
 addons:
