@@ -1,6 +1,5 @@
 language: node_js
 sudo: false
-
 arch:
   - amd64
   - arm64
@@ -17,6 +16,7 @@ addons:
       - musl-dev
 install:
   - sudo ln -s /usr/lib/x86_64-linux-musl/libc.so /lib/libc.musl-x86_64.so.1
+  - sudo ln -s /usr/lib/aarch64-linux-musl/libc.so /lib/libc.musl-aarch64.so.1
   - npm ci
   - npm install coveralls
 script:
