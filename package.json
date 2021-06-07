@@ -30,15 +30,15 @@
   },
   "homepage": "https://github.com/erdtman/aes-ccm",
   "dependencies": {
-    "node-gyp-install": "^2.2.0",
-    "node-pre-gyp": "^0.14.0"
+    "@mapbox/node-pre-gyp": "^1.0.4",
+    "node-gyp-install": "^2.2.0"
   },
   "devDependencies": {
-    "ava": "^3.6.0",
+    "ava": "^3.15.0",
     "node-pre-gyp-github": "^1.4.3",
     "npm-run-all": "*",
-    "nyc": "^15.0.1",
-    "semistandard": "*"
+    "nyc": "^15.1.0",
+    "semistandard": "^16.0.0"
   },
   "binary": {
     "module_name": "aes_ccm",
