@@ -122,12 +122,17 @@ Workflow filename is the filename only, never
 `.github/workflows/publish.yml`, and the file must live in
 `.github/workflows/`.
 
-**Allowed actions.** A configuration created now - i.e. after 2026-09-03 -
-defaults to `npm stage publish` only, while `publish.yml` currently runs plain
-`npm publish`. These two have to be made to agree, either by changing the
-workflow's last step to `npm stage publish` and approving the staged publish
-with 2FA, or by additionally allowing direct publishing. Stage-only is the
-stronger posture and costs one approval click for one final release.
+**Allowed actions: keep the stage-only default.** A configuration created now -
+i.e. after 2026-09-03 - defaults to `npm stage publish` only, and `publish.yml`
+runs `npm stage publish` to match, so nothing extra needs ticking. `npm publish`
+does **not** need to be allowed.
+
+`npm stage publish` is a subcommand, not a flag on `npm publish`. It uploads the
+version without making it public; a maintainer then approves it with
+`npm stage approve` or on npmjs.com. Approval needs interactive 2FA and
+deliberately cannot use an OIDC token, so CI cannot approve its own release -
+which is the point. The other stage subcommands are `npm stage list`,
+`npm stage view` and `npm stage reject`.
 
 **Timing.** A new trusted-publisher configuration **expires if its first
 successful publish does not happen within 2 days**, and an expired one cannot be
@@ -150,10 +155,17 @@ Rewrite `README.md`:
 Order matters.
 
 1. Register the trusted publisher on npmjs.com (starts the 2-day clock).
-2. Tag and let `publish.yml` publish 1.1.0. If the configuration is
-   stage-only, approve the staged publish with 2FA.
+2. Tag and let `publish.yml` stage 1.1.0, then approve it with
+   `npm stage approve` or on npmjs.com. This needs interactive 2FA, so it
+   cannot be automated, and the staged version is not public until it happens.
+   `npm stage list` and `npm stage view` show what is waiting.
 3. Verify the provenance badge appears on the npm package page and that
-   `npm view aes-ccm dist.attestations` is populated.
+   `npm view aes-ccm dist.attestations` is populated. **Check this explicitly
+   rather than assuming it:** npm documents automatic provenance for trusted
+   publishing on a public repo and package, but does not state whether it
+   survives the staged-approval flow. If it does not, the fallback is to allow
+   direct publishing on the trusted publisher and switch the workflow's last
+   step back to `npm publish`.
 4. **Then** deprecate, so that 1.1.0 carries the notice too:
 
    ```

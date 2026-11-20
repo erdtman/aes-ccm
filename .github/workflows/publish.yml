@@ -31,6 +31,11 @@ jobs:
       - run: npm install -g npm@latest
       # No install step needed; the package has no dependencies.
       - run: npm test
+      # Staged publish: this uploads the version but does not make it public.
+      # A maintainer then approves it with `npm stage approve` or on npmjs.com,
+      # which needs interactive 2FA and deliberately cannot be done with the
+      # OIDC token, so CI cannot approve its own release.
+      #
       # Provenance is generated automatically for trusted publishing on a public
       # repo and package, so no --provenance flag is needed.
-      - run: npm publish
+      - run: npm stage publish
