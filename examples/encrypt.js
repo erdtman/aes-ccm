@@ -1,5 +1,3 @@
-/* jshint esversion: 6 */
-/* jslint node: true */
 'use strict';
 
 const ccm = require('../');
@@ -12,5 +10,5 @@ const tagLength = 16;
 
 const res = ccm.encrypt(key, iv, plain, aad, tagLength);
 
-console.log('ciphertext: ' + res.ciphertext.toString('hex'));
-console.log('tag: ' + res.auth_tag.toString('hex'));
+console.log(`ciphertext: ${res.ciphertext.toString('hex')}`);
+console.log(`tag: ${res.auth_tag.toString('hex')}`);

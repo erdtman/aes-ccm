@@ -1,18 +1,17 @@
 {
   "name": "aes-ccm",
-  "version": "1.0.9",
-  "description": "AES CCM support using OpenSSL",
+  "version": "1.1.0",
+  "description": "DEPRECATED - AES CCM support; use the native AES-CCM support in Node's crypto module instead",
   "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
-    "configure": "node-gyp configure",
-    "build": "node-gyp build",
-    "pretest": "semistandard",
-    "coverage": "nyc npm test",
-    "coveragehtml": "nyc report -r html",
-    "precoveragehtml": "npm run coverage",
-    "coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "test": "ava test/*",
-    "install": "node-pre-gyp install --fallback-to-build"
+    "test": "node --test",
+    "coverage": "node --test --experimental-test-coverage"
   },
   "repository": {
     "type": "git",
@@ -21,29 +20,12 @@
   "keywords": [
     "aes",
     "ccm",
-    "openssl"
+    "deprecated"
   ],
   "author": "Samuel Erdtman",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/erdtman/aes-ccm/issues"
   },
-  "homepage": "https://github.com/erdtman/aes-ccm",
-  "dependencies": {
-    "@mapbox/node-pre-gyp": "^1.0.4",
-    "node-gyp-install": "^2.2.0"
-  },
-  "devDependencies": {
-    "ava": "^3.15.0",
-    "node-pre-gyp-github": "^1.4.3",
-    "npm-run-all": "*",
-    "nyc": "^15.1.0",
-    "semistandard": "^16.0.0"
-  },
-  "binary": {
-    "module_name": "aes_ccm",
-    "module_path": "./build/Release",
-    "host": "https://github.com/erdtman/aes-ccm/releases/download/",
-    "remote_path": "{version}"
-  }
+  "homepage": "https://github.com/erdtman/aes-ccm"
 }

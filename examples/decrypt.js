@@ -1,5 +1,3 @@
-/* jshint esversion: 6 */
-/* jslint node: true */
 'use strict';
 
 const ccm = require('../');
@@ -12,5 +10,5 @@ const tag = Buffer.from('d159ba0b957a1adc9b798cd9cb0d45c1', 'hex');
 
 const dres = ccm.decrypt(key, iv, ciphertext, aad, tag);
 
-console.log('ok: ' + dres.auth_ok);
-console.log('plaintext: ' + dres.plaintext.toString('utf8'));
+console.log(`ok: ${dres.auth_ok}`);
+console.log(`plaintext: ${dres.plaintext.toString('utf8')}`);

@@ -1,11 +1,10 @@
-/* jshint esversion: 6 */
-/* jslint node: true */
 'use strict';
 
-const test = require('ava');
+const test = require('node:test');
+const assert = require('node:assert');
 const ccm = require('../');
 
-test('encrypt 01 - CCM-128-AES-128', t => {
+test('encrypt 01 - CCM-128-AES-128', () => {
   const test = {
     key: Buffer.from('404142434445464748494a4b4c4d4e4f', 'hex'),
     iv: Buffer.from('101112131415161718191a1b', 'hex'),
@@ -23,11 +22,11 @@ test('encrypt 01 - CCM-128-AES-128', t => {
     test.tag.length
   );
 
-  t.is(res.ciphertext.toString('hex'), test.ct.toString('hex'));
-  t.is(res.auth_tag.toString('hex'), test.tag.toString('hex'));
+  assert.strictEqual(res.ciphertext.toString('hex'), test.ct.toString('hex'));
+  assert.strictEqual(res.auth_tag.toString('hex'), test.tag.toString('hex'));
 });
 
-test('encrypt 02 - CCM-128-AES-128', t => {
+test('encrypt 02 - CCM-128-AES-128', () => {
   const test = {
     key: Buffer.from('C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF', 'hex'),
     iv: Buffer.from('00000004030201A0A1A2A3A4A5', 'hex'),
@@ -45,11 +44,11 @@ test('encrypt 02 - CCM-128-AES-128', t => {
     test.tag.length
   );
 
-  t.is(res.ciphertext.toString('hex'), test.ct.toString('hex'));
-  t.is(res.auth_tag.toString('hex'), test.tag.toString('hex'));
+  assert.strictEqual(res.ciphertext.toString('hex'), test.ct.toString('hex'));
+  assert.strictEqual(res.auth_tag.toString('hex'), test.tag.toString('hex'));
 });
 
-test('encrypt 03 - CCM-128-AES-128', t => {
+test('encrypt 03 - CCM-128-AES-128', () => {
   const test = {
     key: Buffer.from('C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF', 'hex'),
     iv: Buffer.from('00000003020100A0A1A2A3A4A5', 'hex'),
@@ -67,11 +66,11 @@ test('encrypt 03 - CCM-128-AES-128', t => {
     test.tag.length
   );
 
-  t.is(res.ciphertext.toString('hex'), test.ct.toString('hex'));
-  t.is(res.auth_tag.toString('hex'), test.tag.toString('hex'));
+  assert.strictEqual(res.ciphertext.toString('hex'), test.ct.toString('hex'));
+  assert.strictEqual(res.auth_tag.toString('hex'), test.tag.toString('hex'));
 });
 
-test('encrypt 04 - CCM-128-AES-128', t => {
+test('encrypt 04 - CCM-128-AES-128', () => {
   const test = {
     key: Buffer.from('C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF', 'hex'),
     iv: Buffer.from('00000005040302A0A1A2A3A4A5', 'hex'),
@@ -89,11 +88,11 @@ test('encrypt 04 - CCM-128-AES-128', t => {
     test.tag.length
   );
 
-  t.is(res.ciphertext.toString('hex'), test.ct.toString('hex'));
-  t.is(res.auth_tag.toString('hex'), test.tag.toString('hex'));
+  assert.strictEqual(res.ciphertext.toString('hex'), test.ct.toString('hex'));
+  assert.strictEqual(res.auth_tag.toString('hex'), test.tag.toString('hex'));
 });
 
-test('encrypt 05 - CCM-128-AES-128', t => {
+test('encrypt 05 - CCM-128-AES-128', () => {
   const test = {
     key: Buffer.from('C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF', 'hex'),
     iv: Buffer.from('00000006050403A0A1A2A3A4A5', 'hex'),
@@ -111,11 +110,11 @@ test('encrypt 05 - CCM-128-AES-128', t => {
     test.tag.length
   );
 
-  t.is(res.ciphertext.toString('hex'), test.ct.toString('hex'));
-  t.is(res.auth_tag.toString('hex'), test.tag.toString('hex'));
+  assert.strictEqual(res.ciphertext.toString('hex'), test.ct.toString('hex'));
+  assert.strictEqual(res.auth_tag.toString('hex'), test.tag.toString('hex'));
 });
 
-test('encrypt 06 - CCM-128-AES-128', t => {
+test('encrypt 06 - CCM-128-AES-128', () => {
   const test = {
     key: Buffer.from('C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF', 'hex'),
     iv: Buffer.from('00000007060504A0A1A2A3A4A5', 'hex'),
@@ -133,11 +132,11 @@ test('encrypt 06 - CCM-128-AES-128', t => {
     test.tag.length
   );
 
-  t.is(res.ciphertext.toString('hex'), test.ct.toString('hex'));
-  t.is(res.auth_tag.toString('hex'), test.tag.toString('hex'));
+  assert.strictEqual(res.ciphertext.toString('hex'), test.ct.toString('hex'));
+  assert.strictEqual(res.auth_tag.toString('hex'), test.tag.toString('hex'));
 });
 
-test('encrypt 07 - CCM-128-AES-128', t => {
+test('encrypt 07 - CCM-128-AES-128', () => {
   const test = {
     key: Buffer.from('C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF', 'hex'),
     iv: Buffer.from('00000007060504A0A1A2A3A4A5', 'hex'),
@@ -155,11 +154,11 @@ test('encrypt 07 - CCM-128-AES-128', t => {
     test.tag.length
   );
 
-  t.false(res.ciphertext.equals(test.ct));
-  t.false(res.auth_tag.equals(test.tag));
+  assert.strictEqual(res.ciphertext.equals(test.ct), false);
+  assert.strictEqual(res.auth_tag.equals(test.tag), false);
 });
 
-test('encrypt 08 - CCM-128-AES-128', t => {
+test('encrypt 08 - CCM-128-AES-128', () => {
   const test = {
     key: Buffer.from('C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF', 'hex'),
     iv: Buffer.from('00000007060504A0A1A2A3A4A5', 'hex'),
@@ -177,11 +176,11 @@ test('encrypt 08 - CCM-128-AES-128', t => {
     test.tag.length / 2
   );
 
-  t.false(res.ciphertext.equals(test.ct));
-  t.false(res.auth_tag.equals(test.tag));
+  assert.strictEqual(res.ciphertext.equals(test.ct), false);
+  assert.strictEqual(res.auth_tag.equals(test.tag), false);
 });
 
-test('encrypt 09 - CCM-128-AES-256', t => {
+test('encrypt 09 - CCM-128-AES-256', () => {
   const test = {
     key: Buffer.from('0000000000000000000000000000000000000000000000000000000000000000', 'hex'),
     iv: Buffer.from('000000000000000000000000', 'hex'),
@@ -199,11 +198,11 @@ test('encrypt 09 - CCM-128-AES-256', t => {
     test.tag.length
   );
 
-  t.is(res.ciphertext.toString('hex'), test.ct.toString('hex'));
-  t.is(res.auth_tag.toString('hex'), test.tag.toString('hex'));
+  assert.strictEqual(res.ciphertext.toString('hex'), test.ct.toString('hex'));
+  assert.strictEqual(res.auth_tag.toString('hex'), test.tag.toString('hex'));
 });
 
-test('encrypt 10 - CCM-128-AES-256', t => {
+test('encrypt 10 - CCM-128-AES-256', () => {
   const test = {
     key: Buffer.from('404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f', 'hex'),
     iv: Buffer.from('101112131415161718191a1b', 'hex'),
@@ -221,11 +220,11 @@ test('encrypt 10 - CCM-128-AES-256', t => {
     test.tag.length
   );
 
-  t.is(res.ciphertext.toString('hex'), test.ct.toString('hex'));
-  t.is(res.auth_tag.toString('hex'), test.tag.toString('hex'));
+  assert.strictEqual(res.ciphertext.toString('hex'), test.ct.toString('hex'));
+  assert.strictEqual(res.auth_tag.toString('hex'), test.tag.toString('hex'));
 });
 
-test('encrypt 11 - CCM-128-AES-256', t => {
+test('encrypt 11 - CCM-128-AES-256', () => {
   const test = {
     key: Buffer.from('404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f', 'hex'),
     iv: Buffer.from('101112131415161718191a1b', 'hex'),
@@ -243,11 +242,11 @@ test('encrypt 11 - CCM-128-AES-256', t => {
     test.tag.length
   );
 
-  t.is(res.ciphertext.toString('hex'), test.ct.toString('hex'));
-  t.is(res.auth_tag.toString('hex'), test.tag.toString('hex'));
+  assert.strictEqual(res.ciphertext.toString('hex'), test.ct.toString('hex'));
+  assert.strictEqual(res.auth_tag.toString('hex'), test.tag.toString('hex'));
 });
 
-test('encrypt 12 - CCM-128-AES-256', t => {
+test('encrypt 12 - CCM-128-AES-256', () => {
   const test = {
     key: Buffer.from('404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f', 'hex'),
     iv: Buffer.from('101112131415161718191a1b', 'hex'),
@@ -265,11 +264,11 @@ test('encrypt 12 - CCM-128-AES-256', t => {
     test.tag.length
   );
 
-  t.false(res.ciphertext.equals(test.ct));
-  t.false(res.auth_tag.equals(test.tag));
+  assert.strictEqual(res.ciphertext.equals(test.ct), false);
+  assert.strictEqual(res.auth_tag.equals(test.tag), false);
 });
 
-test('decrypt 01 - CCM-128-AES-128', t => {
+test('decrypt 01 - CCM-128-AES-128', () => {
   const test = {
     key: Buffer.from('404142434445464748494a4b4c4d4e4f', 'hex'),
     iv: Buffer.from('101112131415161718191a1b', 'hex'),
@@ -287,11 +286,11 @@ test('decrypt 01 - CCM-128-AES-128', t => {
     test.tag
   );
 
-  t.true(dres.auth_ok);
-  t.is(dres.plaintext.toString('hex'), test.plain.toString('hex'));
+  assert.strictEqual(dres.auth_ok, true);
+  assert.strictEqual(dres.plaintext.toString('hex'), test.plain.toString('hex'));
 });
 
-test('decrypt 02 - CCM-128-AES-128', t => {
+test('decrypt 02 - CCM-128-AES-128', () => {
   const test = {
     key: Buffer.from('C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF', 'hex'),
     iv: Buffer.from('00000004030201A0A1A2A3A4A5', 'hex'),
@@ -309,11 +308,11 @@ test('decrypt 02 - CCM-128-AES-128', t => {
     test.tag
   );
 
-  t.true(dres.auth_ok);
-  t.is(dres.plaintext.toString('hex'), test.plain.toString('hex'));
+  assert.strictEqual(dres.auth_ok, true);
+  assert.strictEqual(dres.plaintext.toString('hex'), test.plain.toString('hex'));
 });
 
-test('decrypt 03 - CCM-128-AES-128', t => {
+test('decrypt 03 - CCM-128-AES-128', () => {
   const test = {
     key: Buffer.from('C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF', 'hex'),
     iv: Buffer.from('00000003020100A0A1A2A3A4A5', 'hex'),
@@ -331,11 +330,11 @@ test('decrypt 03 - CCM-128-AES-128', t => {
     test.tag
   );
 
-  t.true(dres.auth_ok);
-  t.is(dres.plaintext.toString('hex'), test.plain.toString('hex'));
+  assert.strictEqual(dres.auth_ok, true);
+  assert.strictEqual(dres.plaintext.toString('hex'), test.plain.toString('hex'));
 });
 
-test('decrypt 04 - CCM-128-AES-128', t => {
+test('decrypt 04 - CCM-128-AES-128', () => {
   const test = {
     key: Buffer.from('C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF', 'hex'),
     iv: Buffer.from('00000005040302A0A1A2A3A4A5', 'hex'),
@@ -353,11 +352,11 @@ test('decrypt 04 - CCM-128-AES-128', t => {
     test.tag
   );
 
-  t.true(dres.auth_ok);
-  t.is(dres.plaintext.toString('hex'), test.plain.toString('hex'));
+  assert.strictEqual(dres.auth_ok, true);
+  assert.strictEqual(dres.plaintext.toString('hex'), test.plain.toString('hex'));
 });
 
-test('decrypt 05 - CCM-128-AES-128', t => {
+test('decrypt 05 - CCM-128-AES-128', () => {
   const test = {
     key: Buffer.from('C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF', 'hex'),
     iv: Buffer.from('00000006050403A0A1A2A3A4A5', 'hex'),
@@ -375,11 +374,11 @@ test('decrypt 05 - CCM-128-AES-128', t => {
     test.tag
   );
 
-  t.true(dres.auth_ok);
-  t.is(dres.plaintext.toString('hex'), test.plain.toString('hex'));
+  assert.strictEqual(dres.auth_ok, true);
+  assert.strictEqual(dres.plaintext.toString('hex'), test.plain.toString('hex'));
 });
 
-test('decrypt 06 - CCM-128-AES-128', t => {
+test('decrypt 06 - CCM-128-AES-128', () => {
   const test = {
     key: Buffer.from('C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF', 'hex'),
     iv: Buffer.from('00000007060504A0A1A2A3A4A5', 'hex'),
@@ -397,11 +396,11 @@ test('decrypt 06 - CCM-128-AES-128', t => {
     test.tag
   );
 
-  t.true(dres.auth_ok);
-  t.is(dres.plaintext.toString('hex'), test.plain.toString('hex'));
+  assert.strictEqual(dres.auth_ok, true);
+  assert.strictEqual(dres.plaintext.toString('hex'), test.plain.toString('hex'));
 });
 
-test('decrypt 07 - CCM-128-AES-128', t => {
+test('decrypt 07 - CCM-128-AES-128', () => {
   const test = {
     key: Buffer.from('C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF', 'hex'),
     iv: Buffer.from('00000007060504A0A1A2A3A4A5', 'hex'),
@@ -419,10 +418,10 @@ test('decrypt 07 - CCM-128-AES-128', t => {
     test.tag
   );
 
-  t.false(dres.auth_ok);
+  assert.strictEqual(dres.auth_ok, false);
 });
 
-test('decrypt 08 - CCM-128-AES-128', t => {
+test('decrypt 08 - CCM-128-AES-128', () => {
   const test = {
     key: Buffer.from('C0C1C2C3C4C5C6C7C8C9CACBCCCDCECF', 'hex'),
     iv: Buffer.from('00000007060504A0A1A2A3A4A5', 'hex'),
@@ -440,10 +439,10 @@ test('decrypt 08 - CCM-128-AES-128', t => {
     test.tag
   );
 
-  t.false(dres.auth_ok);
+  assert.strictEqual(dres.auth_ok, false);
 });
 
-test('decrypt 09 - CCM-128-AES-256', t => {
+test('decrypt 09 - CCM-128-AES-256', () => {
   const test = {
     key: Buffer.from('0000000000000000000000000000000000000000000000000000000000000000', 'hex'),
     iv: Buffer.from('000000000000000000000000', 'hex'),
@@ -461,11 +460,11 @@ test('decrypt 09 - CCM-128-AES-256', t => {
     test.tag
   );
 
-  t.true(dres.auth_ok);
-  t.is(dres.plaintext.toString('hex'), test.plain.toString('hex'));
+  assert.strictEqual(dres.auth_ok, true);
+  assert.strictEqual(dres.plaintext.toString('hex'), test.plain.toString('hex'));
 });
 
-test('decrypt 10 - CCM-128-AES-256', t => {
+test('decrypt 10 - CCM-128-AES-256', () => {
   const test = {
     key: Buffer.from('404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f', 'hex'),
     iv: Buffer.from('101112131415161718191a1b', 'hex'),
@@ -483,11 +482,11 @@ test('decrypt 10 - CCM-128-AES-256', t => {
     test.tag
   );
 
-  t.true(dres.auth_ok);
-  t.is(dres.plaintext.toString('hex'), test.plain.toString('hex'));
+  assert.strictEqual(dres.auth_ok, true);
+  assert.strictEqual(dres.plaintext.toString('hex'), test.plain.toString('hex'));
 });
 
-test('decrypt 11 - CCM-128-AES-256', t => {
+test('decrypt 11 - CCM-128-AES-256', () => {
   const test = {
     key: Buffer.from('404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f', 'hex'),
     iv: Buffer.from('101112131415161718191a1b', 'hex'),
@@ -505,11 +504,11 @@ test('decrypt 11 - CCM-128-AES-256', t => {
     test.tag
   );
 
-  t.true(dres.auth_ok);
-  t.is(dres.plaintext.toString('hex'), test.plain.toString('hex'));
+  assert.strictEqual(dres.auth_ok, true);
+  assert.strictEqual(dres.plaintext.toString('hex'), test.plain.toString('hex'));
 });
 
-test('decrypt 12 - CCM-128-AES-256', t => {
+test('decrypt 12 - CCM-128-AES-256', () => {
   const test = {
     key: Buffer.from('404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f', 'hex'),
     iv: Buffer.from('101112131415161718191a1b', 'hex'),
@@ -527,5 +526,97 @@ test('decrypt 12 - CCM-128-AES-256', t => {
     test.tag
   );
 
-  t.false(dres.auth_ok);
+  assert.strictEqual(dres.auth_ok, false);
+});
+
+test('encrypt/decrypt - AES-192 key', () => {
+  const key = Buffer.from('404142434445464748494a4b4c4d4e4f5051525354555657', 'hex');
+  const iv = Buffer.from('101112131415161718191a1b', 'hex');
+  const plain = Buffer.from('202122232425262728292a2b2c2d2e2f', 'hex');
+  const aad = Buffer.from('000102030405060708090a0b', 'hex');
+
+  const res = ccm.encrypt(key, iv, plain, aad, 16);
+  const dres = ccm.decrypt(key, iv, res.ciphertext, aad, res.auth_tag);
+
+  assert.strictEqual(dres.auth_ok, true);
+  assert.strictEqual(dres.plaintext.toString('hex'), plain.toString('hex'));
+});
+
+test('encrypt/decrypt - empty plaintext', () => {
+  const key = Buffer.from('404142434445464748494a4b4c4d4e4f', 'hex');
+  const iv = Buffer.from('101112131415161718191a1b', 'hex');
+  const plain = Buffer.alloc(0);
+  const aad = Buffer.from('000102030405060708090a0b', 'hex');
+
+  const res = ccm.encrypt(key, iv, plain, aad, 16);
+  assert.strictEqual(res.ciphertext.length, 0);
+  assert.strictEqual(res.auth_tag.length, 16);
+
+  const dres = ccm.decrypt(key, iv, res.ciphertext, aad, res.auth_tag);
+  assert.strictEqual(dres.auth_ok, true);
+  assert.strictEqual(dres.plaintext.length, 0);
+});
+
+test('encrypt/decrypt - empty aad', () => {
+  const key = Buffer.from('404142434445464748494a4b4c4d4e4f', 'hex');
+  const iv = Buffer.from('101112131415161718191a1b', 'hex');
+  const plain = Buffer.from('202122232425262728292a2b2c2d2e2f', 'hex');
+  const aad = Buffer.alloc(0);
+
+  const res = ccm.encrypt(key, iv, plain, aad, 16);
+  const dres = ccm.decrypt(key, iv, res.ciphertext, aad, res.auth_tag);
+
+  assert.strictEqual(dres.auth_ok, true);
+  assert.strictEqual(dres.plaintext.toString('hex'), plain.toString('hex'));
+});
+
+test('decrypt - failed auth returns no plaintext', () => {
+  const key = Buffer.from('404142434445464748494a4b4c4d4e4f', 'hex');
+  const iv = Buffer.from('101112131415161718191a1b', 'hex');
+  const aad = Buffer.from('000102030405060708090a0b0c0d0e0f10111213', 'hex');
+  const ct = Buffer.from('e3b201a9f5b71a7a9b1ceaeccd97e70b6176aad9a4428aa5', 'hex');
+  const wrongTag = Buffer.from('484392fbc1b09952', 'hex');
+
+  const dres = ccm.decrypt(key, iv, ct, aad, wrongTag);
+
+  assert.strictEqual(dres.auth_ok, false);
+  assert.strictEqual(dres.plaintext.length, 0);
+});
+
+test('encrypt - unsupported key length throws', () => {
+  const key = Buffer.alloc(20);
+  const iv = Buffer.from('101112131415161718191a1b', 'hex');
+  const plain = Buffer.from('202122232425262728292a2b2c2d2e2f', 'hex');
+  const aad = Buffer.alloc(0);
+
+  assert.throws(() => ccm.encrypt(key, iv, plain, aad, 16), {
+    name: 'TypeError',
+    message: 'unsupported key length 20, expected 16, 24 or 32 bytes'
+  });
+});
+
+test('decrypt - unsupported key length throws', () => {
+  const key = Buffer.alloc(20);
+  const iv = Buffer.from('101112131415161718191a1b', 'hex');
+  const ct = Buffer.from('202122232425262728292a2b2c2d2e2f', 'hex');
+  const aad = Buffer.alloc(0);
+
+  assert.throws(() => ccm.decrypt(key, iv, ct, aad, Buffer.alloc(16)), { name: 'TypeError' });
+});
+
+test('encrypt - invalid auth tag length throws', () => {
+  const key = Buffer.from('404142434445464748494a4b4c4d4e4f', 'hex');
+  const iv = Buffer.from('101112131415161718191a1b', 'hex');
+  const plain = Buffer.from('202122232425262728292a2b2c2d2e2f', 'hex');
+  const aad = Buffer.alloc(0);
+
+  assert.throws(() => ccm.encrypt(key, iv, plain, aad, 9));
+});
+
+test('encrypt - invalid iv length throws', () => {
+  const key = Buffer.from('404142434445464748494a4b4c4d4e4f', 'hex');
+  const plain = Buffer.from('202122232425262728292a2b2c2d2e2f', 'hex');
+  const aad = Buffer.alloc(0);
+
+  assert.throws(() => ccm.encrypt(key, Buffer.alloc(14), plain, aad, 16));
 });
