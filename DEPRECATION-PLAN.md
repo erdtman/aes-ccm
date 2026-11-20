@@ -139,16 +139,28 @@ successful publish does not happen within 2 days**, and an expired one cannot be
 edited - it has to be deleted and recreated. So register it only once the code is
 ready to go out, at the end of Phase 2, not before.
 
-## Phase 2 - document the exit
+## Phase 2 - document the exit (done)
 
-Rewrite `README.md`:
+Rewrote `README.md`:
 
-- Deprecation banner with the date and the reason.
+- Deprecation banner and the reason.
 - Migration section with before/after for `encrypt` and `decrypt`, including the
   one real porting trap: **`node:crypto` throws from `final()` on tag mismatch,
   where this module returned `{ auth_ok: false }`.** Anyone migrating needs the
   `try`/`catch`.
-- Note that `aes-192-ccm` is available natively too.
+- The cipher-per-key-length mapping, so `aes-192-ccm` is discoverable.
+- The CCM constraints that the old addon silently let through: mandatory
+  `setAAD` with `plaintextLength`, single `update()` call, 7-13 byte IV, tag
+  length from the allowed set, auth tag set before `update()` on decrypt.
+
+This was a prerequisite for Phase 3, not optional: the `DeprecationWarning` in
+`lib/index.js` links to `#migration`, which did not exist until this landed, and
+the README is what npm shows as the package page for 1.1.0.
+
+Every snippet in it was executed, not just written: the `after` encrypt produces
+byte-identical output to the `before`, the decrypt round-trips, and the
+documented message-size cap was checked against the real limit, which is
+`2 ** (8 * (15 - ivLength)) - 1` rather than `2 ** (8 * (15 - ivLength))`.
 
 ## Phase 3 - publish and deprecate
 
