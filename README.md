@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/erdtman/aes-ccm.svg?branch=master)](https://travis-ci.com/erdtman/aes-ccm)
+[![test](https://github.com/erdtman/aes-ccm/actions/workflows/test.yml/badge.svg)](https://github.com/erdtman/aes-ccm/actions/workflows/test.yml)
 
 # aes-ccm
 
