@@ -1,0 +1,36 @@
+# Publishes to npm using trusted publishing (OIDC), which also produces a
+# signed provenance attestation. No NPM_TOKEN secret is involved.
+#
+# Requires a trusted publisher registered on npmjs.com for this package with:
+#   organization or user: erdtman
+#   repository:           aes-ccm
+#   workflow filename:    publish.yml
+# See https://docs.npmjs.com/trusted-publishers
+name: publish
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # Lets Actions mint the OIDC token that npm verifies. Without this the
+      # publish fails, often with a misleading E404.
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+      # The runner image ships npm 10.x; trusted publishing needs 11.5.1+.
+      - run: npm install -g npm@latest
+      # No install step needed; the package has no dependencies.
+      - run: npm test
+      # Provenance is generated automatically for trusted publishing on a public
+      # repo and package, so no --provenance flag is needed.
+      - run: npm publish
