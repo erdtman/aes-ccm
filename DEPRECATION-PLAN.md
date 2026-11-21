@@ -1,6 +1,7 @@
 # aes-ccm deprecation plan
 
-Status: Phase 1 done. Written 2026-11-19, updated 2026-11-20.
+Status: Phases 1-3 done; 1.1.0 is published and deprecated. Only Phase 4
+decommissioning remains. Written 2026-11-19, updated 2026-11-21.
 
 `aes-ccm` exists because Node's `crypto` module did not expose AES-CCM when this
 package was written in 2018. It does now. This document records the plan to
@@ -162,40 +163,51 @@ byte-identical output to the `before`, the decrypt round-trips, and the
 documented message-size cap was checked against the real limit, which is
 `2 ** (8 * (15 - ivLength)) - 1` rather than `2 ** (8 * (15 - ivLength))`.
 
-## Phase 3 - publish and deprecate
+## Phase 3 - publish and deprecate (done, 2026-11-20)
 
-Order matters.
+1. Registered the trusted publisher on npmjs.com.
+2. Tagged `v1.1.0` at `9670c8b` and cut the GitHub release, which triggered
+   `publish.yml`. It staged the version
+   (`65121651-1f67-46b9-ba14-d0716ce76d29`), and the staged publish was then
+   approved with 2FA.
+3. Provenance verified, and the open question it carried is now settled:
+   **automatic provenance does survive the staged-approval flow.** The run
+   logged `Signed provenance statement with source and build information from
+   GitHub Actions` and published it to the Sigstore transparency log at
+   `logIndex=4030284015`. The attestation on the registry resolves to
+   `pkg:npm/aes-ccm@1.1.0`, built from `refs/tags/v1.1.0` in
+   `https://github.com/erdtman/aes-ccm` via `.github/workflows/publish.yml` on a
+   GitHub-hosted runner. No fallback to direct publishing was needed, so the
+   trusted publisher stays stage-only.
 
-1. Register the trusted publisher on npmjs.com (starts the 2-day clock).
-2. Tag and let `publish.yml` stage 1.1.0, then approve it with
-   `npm stage approve` or on npmjs.com. This needs interactive 2FA, so it
-   cannot be automated, and the staged version is not public until it happens.
-   `npm stage list` and `npm stage view` show what is waiting.
-3. Verify the provenance badge appears on the npm package page and that
-   `npm view aes-ccm dist.attestations` is populated. **Check this explicitly
-   rather than assuming it:** npm documents automatic provenance for trusted
-   publishing on a public repo and package, but does not state whether it
-   survives the staged-approval flow. If it does not, the fallback is to allow
-   direct publishing on the trusted publisher and switch the workflow's last
-   step back to `npm publish`.
-4. **Then** deprecate, so that 1.1.0 carries the notice too:
+   The published tarball is 4 files and 3.8 kB - `LICENSE`, `README.md`,
+   `lib/index.js`, `package.json` - with shasum
+   `667309d1ad59eb29cad40930b89512492d7f7e3b`, identical to the local
+   `npm pack --dry-run`.
+4. Deprecated afterwards, so 1.1.0 carries the notice too:
 
    ```
-   NPM_CONFIG_REGISTRY=https://registry.npmjs.org/ npm deprecate aes-ccm@"*" "Deprecated: Node's built-in crypto supports AES-CCM natively - use crypto.createCipheriv('aes-128-ccm', key, iv, { authTagLength }). See the README for migration."
+   NPM_CONFIG_REGISTRY=https://registry.npmjs.org/ npm deprecate aes-ccm@"*" "Deprecated: Node's built-in crypto supports AES-CCM natively - use crypto.createCipheriv('aes-128-ccm', key, iv, { authTagLength }). See https://github.com/erdtman/aes-ccm#migration"
    ```
 
-   Doing this before publishing would leave 1.1.0 un-deprecated.
+   The registry override matters: this machine has `NPM_CONFIG_REGISTRY` pointed
+   at an internal Artifactory mirror, and **trusted publishing only covers
+   publishing**, so `npm deprecate` needs ordinary auth and would otherwise go
+   to the wrong registry. Publishing from CI sidesteps the same problem.
 
-   Note that **trusted publishing only covers publishing**. `npm deprecate` is a
-   separate registry operation that still needs ordinary auth, so this step runs
-   locally after `npm login`, with the registry overridden past the Artifactory
-   mirror as shown.
-5. Verify with `npm view aes-ccm deprecated` and a clean `npm install aes-ccm`
-   in a throwaway directory on Node 24.
+   The npmjs.com web UI can deprecate a package, but its documented flow has no
+   message field, and the message is the point - so the CLI is the only way to
+   do this properly.
+5. Verified: all 11 published versions carry the message, 1.1.0 included, the
+   migration link is in it, and the attestation and tarball are intact.
 
-Note: this machine has `NPM_CONFIG_REGISTRY` pointed at an internal Artifactory
-mirror, so a local `npm publish` would go to the wrong registry. Publishing from
-CI avoids that problem entirely.
+**One consequence worth knowing.** `npm deprecate aes-ccm@"*"` sets the
+per-version `deprecated` field on every version, which is what npm prints at
+install time. It does **not** set the package-level field, so `aes-ccm` is still
+listed in npm search. Removing it from search needs the whole-package form -
+`npm deprecate aes-ccm "<message>"` with no version range, or the website's
+Deprecate package button. Whether that preserves or clobbers the per-version
+messages is untested, so it was left alone.
 
 ## Phase 4 - decommission
 
