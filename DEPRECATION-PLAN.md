@@ -211,14 +211,23 @@ messages is untested, so it was left alone.
 
 ## Phase 4 - decommission
 
-1. **Revoke the GitHub PAT in `.env`.** It is untracked and gitignored, so it
-   was never committed, but it is a live `public_repo` + `repo_deployment` token
-   sitting in plaintext on disk for a release pipeline that no longer exists.
-   Delete the file after revoking.
-2. After trusted publishing works **and the deprecate in Phase 3 has gone
-   through**, set the package to require 2FA and disallow tokens, and revoke any
-   remaining npm automation tokens. Doing this before the deprecate would lock
-   out the credential that step needs.
+1. **The GitHub PAT in `.env`: done, nothing to revoke.** The file held a
+   `NODE_PRE_GYP_GITHUB_TOKEN` - a GitHub PAT that `node-pre-gyp-github` used to
+   upload prebuilt binaries to GitHub Releases, not an npm token - as a 40-hex
+   classic token dating from 2019.
+
+   It was never committed: no commit on any branch or tag touches `.env`, and
+   the value appears zero times across every object in the repo, because
+   `.gitignore` caught it from the start. It did not appear in the account's
+   classic-PAT list either, and an authenticated read against
+   `https://api.github.com/user` returned `401 Bad credentials`, so it had
+   already been revoked or expired. Confirmed dead rather than assumed, then the
+   file was deleted. Nothing in the repo reads that variable any more.
+2. Set the package to require 2FA and disallow tokens. There are no npm
+   automation tokens left to revoke - the account's token list is empty, which
+   also independently confirms the release went out over OIDC, since no token
+   existed to publish with. Do this only now that the Phase 3 deprecate has gone
+   through; earlier it would have locked out the credential that step needed.
 3. Leave the old GitHub release binaries in place - someone pinned to 1.0.x on
    Node 14 still resolves against them.
 4. Archive the repository **last**, after the README lands and anyone with
